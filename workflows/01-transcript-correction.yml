@@ -1,0 +1,249 @@
+app:
+  description: 输入视频转写稿，输出纠错后的干净文本 + 知识点 + Q&A（供知识库与面试演示）
+  icon: null
+  icon_background: null
+  icon_type: emoji
+  mode: workflow
+  name: 转写稿纠错与知识点提取
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.24@9e12eef09973667f0eaf4f082af883167e1de88740b22e71e71488d020c3778a
+    version: null
+kind: app
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload: {}
+    sensitive_word_avoidance:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: start
+        targetType: llm
+      id: e1
+      source: '1719100000001'
+      sourceHandle: source
+      target: '1719100000002'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: llm
+        targetType: code
+      id: e2
+      source: '1719100000002'
+      sourceHandle: source
+      target: '1719100000003'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: code
+        targetType: end
+      id: e3
+      source: '1719100000003'
+      sourceHandle: source
+      target: '1719100000004'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: 输入视频标题、描述、原始转写稿
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 视频标题
+          max_length: 200
+          options: []
+          required: false
+          type: text-input
+          variable: title
+        - label: 视频描述
+          max_length: 2000
+          options: []
+          required: false
+          type: paragraph
+          variable: desc
+        - label: 原始转写稿
+          max_length: 20000
+          options: []
+          required: true
+          type: paragraph
+          variable: transcript
+      height: 189
+      id: '1719100000001'
+      position:
+        x: 80
+        y: 280
+      positionAbsolute:
+        x: 80
+        y: 280
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 纠错字、删客套话、提取知识点、生成问答对
+        model:
+          completion_params:
+            temperature: 0.3
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: sys-1
+          role: system
+          text: "你是视频转写稿的校对与知识点提取员。职责是：把 ASR（语音识别）产出的**带错字的转写稿**，整理成**干净的正文**，并提取**知识点**与**问答对**。\n\
+            \n**你不是文案，不是评论员，是校对+档案员。你的价值在于「忠实原文」，不在于「写得漂亮」。**\n\n=== 输出纪律（最重要，违反即失败）===\n\
+            A. 直接输出最终结果。禁止输出思考过程、自我辩论、备选方案、解释说明。第一行就是「## 校对稿」。\nB. 输出中不得出现「我们需要」「让我想想」「也许」「可以考虑」这类内部对话语言。\n\
+            C. 不要添加原文没有的信息。原文没说的，不要补。\nD. 禁止输出占位符（如 XXX、某内容）。\n\n=== 约束优先级（冲突时按此顺序）===\n\
+            1. **删客套话（必须做）**。片头问候和片尾套话一律删除，例如：\n   - 片头：「大家好我是XX」「你怎么才来」「点赞关注不迷路」\n\
+            \   - 片尾：「这就是本次分享」「有任何意见建议可以加群反馈」「求一键三连」「谢谢大家拜拜」\n   只保留**正片内容**（讲解、演示、结论）。\n\
+            2. 忠实原文 > 一切。只改错别字、同音字、标点、断句，不改意思。\n3. **专业术语要纠正**。例如「工作榴」→「工作流」、「详情业」→「详情页」、「Coffee\
+            \ UI」→「ComfyUI」、「Cloud」→「Claude」、「萌龙感」→「朦胧感」、「体识词」→「提示词」。\n4. 口语化的重复、语气词（嗯、啊、这个）可适当精简，但不删信息。\n\
+            5. 原文含糊或不可辨认的地方，标注「（听不清）」，不要猜。\n\n=== 输出格式（严格遵守）===\n## 校对稿\n（逐段输出的正片文本，已删掉片头片尾客套话，保留原意与顺序）\n\
+            \n## 知识点\n- （知识点1）\n- （知识点2）\n\n## 问答对\nQ: （问题）\nA: （答案）\n\n=== 输入 ===\n\
+            视频标题：{{#1719100000001.title#}}\n视频描述：{{#1719100000001.desc#}}\n原始转写稿：\n\
+            {{#1719100000001.transcript#}}"
+        selected: false
+        title: 校对 + 提取知识点与问答
+        type: llm
+        vision:
+          configs:
+            variable_selector: []
+          enabled: false
+      height: 132
+      id: '1719100000002'
+      position:
+        x: 420
+        y: 280
+      positionAbsolute:
+        x: 420
+        y: 280
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        code: "import re\n\n\ndef main(raw: str) -> dict:\n    text = raw or \"\"\n\
+          \    original_len = len(text)\n\n    text = re.sub(r\"(?s)<think>.*?</think>\"\
+          , \"\", text)\n    text = re.sub(r\"(?s)<!--.*?-->\", \"\", text)\n    text\
+          \ = re.sub(r\"(?s)^\\s*```[a-zA-Z0-9_-]*\\s*\\n\", \"\", text)\n    text\
+          \ = re.sub(r\"(?s)\\n```\\s*$\", \"\", text)\n\n    m = re.search(r\"(?m)^#{2}\\\
+          s\", text)\n    if m:\n        text = text[m.start():]\n\n    text = text.strip()\n\
+          \    text = re.sub(r\"\\n{3,}\", \"\\n\\n\", text)\n    text = re.sub(r\"\
+          [ \\t]+\\n\", \"\\n\", text)\n\n    return {\n        \"clean\": text,\n\
+          \        \"clean_len\": len(text),\n        \"removed_chars\": original_len\
+          \ - len(text),\n        \"has_think\": 1 if \"<think>\" in (raw or \"\"\
+          ) else 0,\n    }\n"
+        code_language: python3
+        desc: 复用 A0 的清洗逻辑
+        outputs:
+          clean:
+            children: null
+            type: string
+          clean_len:
+            children: null
+            type: number
+          has_think:
+            children: null
+            type: number
+          removed_chars:
+            children: null
+            type: number
+        selected: false
+        title: 剥离思维链 + 规范化
+        type: code
+        variables:
+        - value_selector:
+          - '1719100000002'
+          - text
+          variable: raw
+      height: 80
+      id: '1719100000003'
+      position:
+        x: 760
+        y: 280
+      positionAbsolute:
+        x: 760
+        y: 280
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        desc: 输出干净文本
+        outputs:
+        - value_selector:
+          - '1719100000003'
+          - clean
+          variable: clean
+        - value_selector:
+          - '1719100000003'
+          - clean_len
+          variable: clean_len
+        - value_selector:
+          - '1719100000003'
+          - removed_chars
+          variable: removed_chars
+        - value_selector:
+          - '1719100000003'
+          - has_think
+          variable: has_think
+        selected: false
+        title: 结束
+        type: end
+      height: 194
+      id: '1719100000004'
+      position:
+        x: 1100
+        y: 280
+      positionAbsolute:
+        x: 1100
+        y: 280
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    viewport:
+      x: -7.3025275695123355
+      y: 312.0854649243235
+      zoom: 0.6093853943072869
+  rag_pipeline_variables: []

@@ -1,0 +1,225 @@
+app:
+  description: 基于抖音/B站视频转写稿的知识库，回答「视频里XX是怎么讲的」
+  icon: null
+  icon_background: null
+  icon_type: emoji
+  mode: advanced-chat
+  name: 视频知识库问答
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.24@9e12eef09973667f0eaf4f082af883167e1de88740b22e71e71488d020c3778a
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/ollama:1.0.2@ef203a332d1b2b8952dbaa012be70be3e0a2d576b001489fb3b070efc970ffbe
+    version: null
+kind: app
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload: {}
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: e1
+      source: start_1
+      sourceHandle: source
+      target: knowledge_retrieval
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: e2
+      source: knowledge_retrieval
+      sourceHandle: source
+      target: llm_1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        iteration_id: null
+        loop_id: null
+        sourceType: llm
+        targetType: answer
+      id: e3
+      source: llm_1
+      sourceHandle: source
+      target: answer_1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        answer: '{{#llm_1.text#}}'
+        desc: 输出答案
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 130
+      id: answer_1
+      position:
+        x: 1100
+        y: 280
+      positionAbsolute:
+        x: 1100
+        y: 280
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        dataset_ids:
+        - Ox0RQ/215P3WekXSyoeXOUjuvo+k0dbi9dl7cSpvT5j11VNZeJDTW5DAksEDpfJa
+        desc: 从视频转写稿知识库检索相关片段
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: weighted_score
+          score_threshold: 0.3
+          score_threshold_enabled: true
+          top_k: 10
+          weights:
+            keyword_setting:
+              keyword_weight: 0.5
+            vector_setting:
+              embedding_model_name: nomic-embed-text
+              embedding_provider_name: langgenius/ollama/ollama
+              vector_weight: 0.5
+        query_variable_selector:
+        - start_1
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 80
+      id: knowledge_retrieval
+      position:
+        x: 420
+        y: 280
+      positionAbsolute:
+        x: 420
+        y: 280
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 只依据检索片段回答并标注来源
+        model:
+          completion_params:
+            temperature: 0.2
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: sys-1
+          role: system
+          text: "你是「视频知识库问答」助手。职责是：基于检索到的**视频转写稿片段**，准确回答用户的问题。\n\n=== 输出纪律（违反即失败）===\n\
+            A. 直接输出答案。禁止输出思考过程、自我辩论、备选方案。\nB. 不得出现「我们需要」「让我想想」「也许」这类内部对话语言。\nC. **不要复述输入。**\
+            \ 用户问什么就答什么，不要把所有检索到的内容都罗列一遍。\nD. **禁止输出占位符。** 任何时候都不要写出「XXX」「X」「某主题」这类占位文字，必须换成用户的真实问题内容。\n\
+            \n=== 判定：能不能回答（必须先做这一步）===\n拿到检索片段后，先问自己：**这些片段里有没有能回应用户问题的信息？**\n\n-\
+            \ **只要片段里有相关信息（哪怕是部分、哪怕是间接的）→ 就回答。** 不要因为找不到「逐字对应的句子」就拒答。\n- **不要因为片段「没有分点列成\
+            \ 1、2、3」就判定成没回答。** 只要片段里的原话已经包含了用户要的信息，就算能回答，把它整理成通顺的话输出即可。\n- **不要因为片段里的话是口语、比较零散就判定成没回答。**\
+            \ 整理和转述是你的本职工作，不是「编造」。\n- **只有在片段确实完全没有任何相关信息时，才走拒答路径**，且第一句必须是：\n  「知识库里没有关于「<把用户的问题原话填在这里>」的内容。」\n\
+            \n=== 回答规则 ===\n1. **正面回应用户问的那件事。** 用户问 A，就答 A。\n   - 不要答成 B（哪怕 B 也在片段里、哪怕\
+            \ B 更完整）。\n   - 不要用「某个相关话题的条件/方法/场景」去替代用户真正问的东西。\n   - 如果片段里 A 的信息少而 B\
+            \ 的信息多，仍然只答 A，可以简短。\n2. **只依据检索到的片段。** 片段里没有的事实、数字、工具名、步骤，一律不许出现。宁可答得少，不许编。\n\
+            3. **必须标注来源。** 每个要点后注明来自哪个视频（片段里有标题/平台/ID）。\n4. **有冲突要并列。** 多个视频讲法不同就分开列，不要自行合并成一个说法。\n\
+            5. 口语转书面：转写稿是口语，整理成通顺表达，但不改变原意、不补充信息。\n\n=== 用户的原始问题 ===\n{{#start_1.query#}}\n\
+            \n=== 检索到的片段 ===\n{{#knowledge_retrieval.result#}}"
+        selected: false
+        title: 基于片段回答
+        type: llm
+        vision:
+          configs:
+            variable_selector: []
+          enabled: false
+      height: 116
+      id: llm_1
+      position:
+        x: 760
+        y: 280
+      positionAbsolute:
+        x: 760
+        y: 280
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        desc: 用户提问
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 用户问题
+          max_length: 2000
+          options: []
+          required: true
+          type: paragraph
+          variable: query
+      height: 137
+      id: start_1
+      position:
+        x: 80
+        y: 280
+      positionAbsolute:
+        x: 80
+        y: 280
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    viewport:
+      x: -297.3058453952001
+      y: 452.71702157138077
+      zoom: 0.4863274737061426
+  rag_pipeline_variables: []

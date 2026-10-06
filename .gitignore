@@ -1,0 +1,71 @@
+# ---- 凭据 / 隐私（最重要）----
+config.py
+*.cookie
+*xhs-cookie*
+*cookie*.txt
+.env
+.env.*
+*.key
+*secret*
+*apikey*
+*_api_key*
+测试火山方舟Key.py
+
+# ---- 下载内容 / 工作目录 ----
+*.mp4
+*.mkv
+*.webm
+*.m4s
+*.wav
+*.mp3
+*.flac
+work/
+downloads/
+视频抓取测试/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Node ----
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- 日志 / 临时 ----
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+_*.json
+_*.mjs
+_*.cjs
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- 大文件（架构图 HTML 例外，它是交付物）----
+*.zip
+*.tar.gz
+*.dmp
+*.DMP
