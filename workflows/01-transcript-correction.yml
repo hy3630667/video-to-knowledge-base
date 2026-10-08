@@ -30,8 +30,6 @@ workflow:
     - data:
         isInIteration: false
         isInLoop: false
-        iteration_id: null
-        loop_id: null
         sourceType: start
         targetType: llm
       id: e1
@@ -44,8 +42,6 @@ workflow:
     - data:
         isInIteration: false
         isInLoop: false
-        iteration_id: null
-        loop_id: null
         sourceType: llm
         targetType: code
       id: e2
@@ -58,8 +54,6 @@ workflow:
     - data:
         isInIteration: false
         isInLoop: false
-        iteration_id: null
-        loop_id: null
         sourceType: code
         targetType: end
       id: e3
@@ -243,7 +237,7 @@ workflow:
       width: 242
       zIndex: 0
     viewport:
-      x: -7.3025275695123355
-      y: 312.0854649243235
-      zoom: 0.6093853943072869
+      x: 114.31073300743356
+      y: 284.9919190294647
+      zoom: 0.8040888484979247
   rag_pipeline_variables: []

@@ -19,10 +19,10 @@ import subprocess
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
-MEDIA = sys.argv[1] if len(sys.argv) > 1 else r"D:\视频抓取测试\douyin-test.mp4"
+MEDIA = sys.argv[1] if len(sys.argv) > 1 else r"<你的工作目录>\douyin-test.mp4"
 MODEL = sys.argv[2] if len(sys.argv) > 2 else "small"
-FFMPEG = r"D:\ffmpeg\bin\ffmpeg.exe"
-WAV = r"D:\视频抓取测试\audio-16k-mono.wav"
+FFMPEG = r"<你的 ffmpeg 路径>"
+WAV = r"<你的工作目录>\audio-16k-mono.wav"
 
 os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")
 os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")

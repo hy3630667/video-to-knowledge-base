@@ -33,6 +33,10 @@ XHS_API = "http://127.0.0.1:5556/xhs/detail"
 # Dify 地址
 DIFY_BASE = "http://localhost"
 
+# ---- 入库服务 ----
+# 只在跑 ingest-service.py 时需要
+INGEST_SERVICE_PORT = 8090
+
 # ---- 小红书 Cookie 文件 ----
 # ⚠️ 含登录凭据，不要提交到 Git
 # 格式：一行 Cookie 头，形如 a1=xxx; web_session=yyy; ...
@@ -50,3 +54,12 @@ DEFAULT_DATASET = ""
 # 从 workflows/01-transcript-correction.yml 导入后，
 # 在应用 URL 里：/app/<这个 ID>/workflow
 CORRECTION_APP_ID = ""
+
+# ---- Dify 问答应用 app id ----
+# 只在用 skill/scripts/ask.mjs 时需要，在应用 URL 里：/app/<这个 ID>/chat
+QA_APP_ID = ""
+
+# ---- 元数据字段 ID ----
+# 知识库里建了「主题」元数据字段后，从接口拿到它的 id
+# 只在要自动打主题标签时需要
+TOPIC_METADATA_ID = ""

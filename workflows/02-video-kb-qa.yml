@@ -43,99 +43,236 @@ workflow:
     - data:
         isInIteration: false
         isInLoop: false
-        iteration_id: null
-        loop_id: null
-        sourceType: start
-        targetType: knowledge-retrieval
-      id: e1
-      source: start_1
-      sourceHandle: source
-      target: knowledge_retrieval
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        isInLoop: false
-        iteration_id: null
-        loop_id: null
         sourceType: knowledge-retrieval
         targetType: llm
-      id: e2
-      source: knowledge_retrieval
+      id: e-kr1-eval
+      source: kr_1
       sourceHandle: source
-      target: llm_1
+      target: llm_eval
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
         isInIteration: false
         isInLoop: false
-        iteration_id: null
-        loop_id: null
+        sourceType: llm
+        targetType: if-else
+      id: e-eval-if
+      source: llm_eval
+      sourceHandle: source
+      target: if_1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: e-if-true
+      source: if_1
+      sourceHandle: 'true'
+      target: llm_ans1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: e-if-false
+      source: if_1
+      sourceHandle: 'false'
+      target: llm_q2
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
         sourceType: llm
         targetType: answer
-      id: e3
-      source: llm_1
+      id: e-ans1-a1
+      source: llm_ans1
       sourceHandle: source
       target: answer_1
       targetHandle: target
       type: custom
       zIndex: 0
-    nodes:
     - data:
-        answer: '{{#llm_1.text#}}'
-        desc: 输出答案
-        selected: false
-        title: 直接回复
-        type: answer
-        variables: []
-      height: 130
-      id: answer_1
-      position:
-        x: 1100
-        y: 280
-      positionAbsolute:
-        x: 1100
-        y: 280
-      selected: false
-      sourcePosition: right
-      targetPosition: left
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: knowledge-retrieval
+      id: e-q2-kr2
+      source: llm_q2
+      sourceHandle: source
+      target: kr_2
+      targetHandle: target
       type: custom
-      width: 242
       zIndex: 0
     - data:
-        dataset_ids:
-        - Ox0RQ/215P3WekXSyoeXOUjuvo+k0dbi9dl7cSpvT5j11VNZeJDTW5DAksEDpfJa
-        desc: 从视频转写稿知识库检索相关片段
-        multiple_retrieval_config:
-          reranking_enable: false
-          reranking_mode: weighted_score
-          score_threshold: 0.3
-          score_threshold_enabled: true
-          top_k: 10
-          weights:
-            keyword_setting:
-              keyword_weight: 0.5
-            vector_setting:
-              embedding_model_name: nomic-embed-text
-              embedding_provider_name: langgenius/ollama/ollama
-              vector_weight: 0.5
-        query_variable_selector:
-        - start_1
-        - query
-        retrieval_mode: multiple
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: e-kr2-ans2
+      source: kr_2
+      sourceHandle: source
+      target: llm_ans2
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: e-ans2-a2
+      source: llm_ans2
+      sourceHandle: source
+      target: answer_2
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: e-chat-ans
+      source: llm_chat
+      sourceHandle: source
+      target: answer_chat
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: e-start-intent
+      source: start_1
+      sourceHandle: source
+      target: llm_intent
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: e-intent-if
+      source: llm_intent
+      sourceHandle: source
+      target: if_intent
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: llm
+      id: e-q1-topic
+      source: llm_q1
+      sourceHandle: source
+      target: llm_topic
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: knowledge-retrieval
+      id: e-topic-kr1
+      source: llm_topic
+      sourceHandle: source
+      target: kr_1
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: e-if-kb2
+      source: if_intent
+      sourceHandle: case-kb
+      target: llm_q1
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: e-if-chat2
+      source: if_intent
+      sourceHandle: 'false'
+      target: llm_chat
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: e-if-ing1
+      source: if_intent
+      sourceHandle: case-ingest
+      target: code_extract
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: http-request
+      id: e-ing-http
+      source: code_extract
+      sourceHandle: source
+      target: http_ingest
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: e-http-msg
+      source: http_ingest
+      sourceHandle: source
+      target: code_ingest_msg
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: answer
+      id: e-msg-ans
+      source: code_ingest_msg
+      sourceHandle: source
+      target: answer_ingest
+      targetHandle: target
+      type: custom
+    nodes:
+    - data:
+        desc: 用户提问
         selected: false
-        title: 知识检索
-        type: knowledge-retrieval
-      height: 80
-      id: knowledge_retrieval
+        title: 开始
+        type: start
+        variables:
+        - label: 用户问题
+          max_length: 2000
+          options: []
+          required: true
+          type: paragraph
+          variable: query
+      height: 137
+      id: start_1
       position:
-        x: 420
-        y: 280
+        x: -92.78084449598077
+        y: -172.56644983676878
       positionAbsolute:
-        x: 420
-        y: 280
+        x: -92.78084449598077
+        y: -172.56644983676878
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -146,7 +283,361 @@ workflow:
         context:
           enabled: false
           variable_selector: []
+        desc: 把口语化的问题改写成更适合检索的形式
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: 助手
+            user: 用户
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: sys-1
+          role: system
+          text: '你在为一个视频转写稿知识库做检索预处理。
+
+
+            任务：把用户的口语化问题，改写成一句更适合检索的完整问句。
+
+
+            改写规则：
+
+            A. 输出必须是一句通顺的话（像人在提问），不要输出关键词列表。
+
+            B. 把指代词换成具体描述。例如「那个视频」→「视频中提到的」；「它」「这个东西」也换成具体说法。
+
+            C. 保持原问题的核心意图不变，只是把话说明白。
+
+            D. 不要加解释、不要编号、不要引号、不要任何前缀，就输出这一句话。
+
+
+            示例：
+
+            输入：那个视频里说的两步具体是什么？
+
+            输出：视频中提到的这两个步骤具体是什么？
+
+
+            输入：安装要什么条件？
+
+            输出：这个工具需要满足哪些安装条件？
+
+
+            === 用户的问题 ===
+
+            {{#sys.query#}}'
+        selected: false
+        title: 改写为检索式
+        type: llm
+        vision:
+          configs:
+            variable_selector: []
+          enabled: false
+      height: 132
+      id: llm_q1
+      position:
+        x: 924.2191555040175
+        y: -121.99999999999973
+      positionAbsolute:
+        x: 924.2191555040175
+        y: -121.99999999999973
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        dataset_ids:
+        - Ox0RQ/215P3WekXSyoeXOUjuvo+k0dbi9dl7cSpvT5j11VNZeJDTW5DAksEDpfJa
+        desc: 用改写后的查询做第一次检索
+        metadata_filtering_conditions:
+          conditions:
+          - comparison_operator: is
+            id: cond-topic
+            metadata_id: REPLACE_WITH_YOUR_TOPIC_METADATA_ID
+            name: 主题
+            value: '{{#llm_topic.text#}}'
+          logical_operator: and
+        metadata_filtering_mode: manual
+        metadata_model_config:
+          completion_params:
+            temperature: 0
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: weighted_score
+          score_threshold: null
+          score_threshold_enabled: false
+          top_k: 10
+          weights:
+            keyword_setting:
+              keyword_weight: 0.5
+            vector_setting:
+              embedding_model_name: nomic-embed-text
+              embedding_provider_name: langgenius/ollama/ollama
+              vector_weight: 0.5
+        query_variable_selector:
+        - llm_q1
+        - text
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索（改写后）
+        type: knowledge-retrieval
+      height: 118
+      id: kr_1
+      position:
+        x: 1216.7999999999984
+        y: -121.99999999999973
+      positionAbsolute:
+        x: 1216.7999999999984
+        y: -121.99999999999973
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 判断检索到的片段能否回答用户的原问题
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: 助手
+            user: 用户
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: sys-1
+          role: system
+          text: '判断下面这批检索片段，能不能回答用户的原问题。
+
+
+            判定标准：
+
+            A. 只要片段里包含与问题相关的信息（哪怕是部分、哪怕是口语化的零散说法），就判定为「充分」。
+
+            B. 不要因为片段没有分点列成 1、2、3 就判定为不充分。
+
+            C. 不要因为片段是口语、比较零散就判定为不充分。
+
+            D. 只有当片段与问题主题完全无关时，才判定为「不充分」。
+
+
+            输出格式（严格只输出一行）：
+
+            判定：充分
+
+            或
+
+            判定：不充分
+
+
+            === 用户的原问题 ===
+
+            {{#sys.query#}}
+
+
+            === 检索到的片段 ===
+
+            {{#kr_1.result#}}'
+        selected: false
+        title: 评估检索是否够用
+        type: llm
+        vision:
+          configs:
+            variable_selector: []
+          enabled: false
+      height: 132
+      id: llm_eval
+      position:
+        x: 1537.999999999999
+        y: -121.99999999999973
+      positionAbsolute:
+        x: 1537.999999999999
+        y: -121.99999999999973
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: cond-1
+            value: 判定：充分
+            varType: string
+            variable_selector:
+            - llm_eval
+            - text
+          logical_operator: and
+        desc: 充分则直接作答，否则换角度重检
+        selected: false
+        title: 检索够不够
+        type: if-else
+      height: 176
+      id: if_1
+      position:
+        x: 1837.7999999999975
+        y: -129.99999999999966
+      positionAbsolute:
+        x: 1837.7999999999975
+        y: -129.99999999999966
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 第一次检索不够时，换一种问法再试
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: 助手
+            user: 用户
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.3
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: sys-1
+          role: system
+          text: '上一次检索没有找到足够的信息。请换一个角度，把这个问题重新问一遍。
+
+
+            换个角度的意思：
+
+            A. 如果原来问「怎么做」，这次换成问「需要什么条件」「有什么要求」「步骤是什么」。
+
+            B. 如果原来用了具体名词，这次换成更宽泛的说法；反之亦然。
+
+            C. 输出必须是一句通顺的话，不要关键词列表。
+
+            D. 不要加解释、不要引号、不要前缀，就输出这一句话。
+
+
+            === 用户的原问题 ===
+
+            {{#sys.query#}}
+
+
+            === 上一次用的问法（效果不好，别重复）===
+
+            {{#llm_q1.text#}}'
+        selected: false
+        title: 换个角度改写
+        type: llm
+        vision:
+          configs:
+            variable_selector: []
+          enabled: false
+      height: 116
+      id: llm_q2
+      position:
+        x: 1845.388055249951
+        y: 80.62125804937706
+      positionAbsolute:
+        x: 1845.388055249951
+        y: 80.62125804937706
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        dataset_ids:
+        - Ox0RQ/215P3WekXSyoeXOUjuvo+k0dbi9dl7cSpvT5j11VNZeJDTW5DAksEDpfJa
+        desc: 用第二种问法再检索一次
+        metadata_filtering_conditions:
+          conditions:
+          - comparison_operator: is
+            id: cond-topic
+            metadata_id: REPLACE_WITH_YOUR_TOPIC_METADATA_ID
+            name: 主题
+            value: '{{#llm_topic.text#}}'
+          logical_operator: and
+        metadata_filtering_mode: manual
+        metadata_model_config:
+          completion_params:
+            temperature: 0
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: weighted_score
+          score_threshold: null
+          score_threshold_enabled: false
+          top_k: 10
+          weights:
+            keyword_setting:
+              keyword_weight: 0.5
+            vector_setting:
+              embedding_model_name: nomic-embed-text
+              embedding_provider_name: langgenius/ollama/ollama
+              vector_weight: 0.5
+        query_variable_selector:
+        - llm_q2
+        - text
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索（换角度）
+        type: knowledge-retrieval
+      height: 118
+      id: kr_2
+      position:
+        x: 2187.9162486504238
+        y: 80.62125804937706
+      positionAbsolute:
+        x: 2187.9162486504238
+        y: 80.62125804937706
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
         desc: 只依据检索片段回答并标注来源
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: 助手
+            user: 用户
+          window:
+            enabled: true
+            size: 10
         model:
           completion_params:
             temperature: 0.2
@@ -164,62 +655,443 @@ workflow:
             \n=== 判定：能不能回答（必须先做这一步）===\n拿到检索片段后，先问自己：**这些片段里有没有能回应用户问题的信息？**\n\n-\
             \ **只要片段里有相关信息（哪怕是部分、哪怕是间接的）→ 就回答。** 不要因为找不到「逐字对应的句子」就拒答。\n- **不要因为片段「没有分点列成\
             \ 1、2、3」就判定成没回答。** 只要片段里的原话已经包含了用户要的信息，就算能回答，把它整理成通顺的话输出即可。\n- **不要因为片段里的话是口语、比较零散就判定成没回答。**\
-            \ 整理和转述是你的本职工作，不是「编造」。\n- **只有在片段确实完全没有任何相关信息时，才走拒答路径**，且第一句必须是：\n  「知识库里没有关于「<把用户的问题原话填在这里>」的内容。」\n\
-            \n=== 回答规则 ===\n1. **正面回应用户问的那件事。** 用户问 A，就答 A。\n   - 不要答成 B（哪怕 B 也在片段里、哪怕\
-            \ B 更完整）。\n   - 不要用「某个相关话题的条件/方法/场景」去替代用户真正问的东西。\n   - 如果片段里 A 的信息少而 B\
-            \ 的信息多，仍然只答 A，可以简短。\n2. **只依据检索到的片段。** 片段里没有的事实、数字、工具名、步骤，一律不许出现。宁可答得少，不许编。\n\
+            \ 整理和转述是你的本职工作，不是「编造」。\n- **只有在片段确实完全没有任何相关信息时，才走拒答路径。** 拒答时按下面这个格式说：\n\
+            \n  「知识库里没有关于「<把用户的问题原话填在这里>」的内容。\n\n  如果你手上有讲这件事的视频，把链接发给我，我帮你存进知识库，之后就能直接问了。」\n\
+            \n  最后那句引导是必须的——不要只说「没有」就结束，要给用户一个下一步。\n\n=== 回答规则 ===\n1. **正面回应用户问的那件事。**\
+            \ 用户问 A，就答 A。\n   - 不要答成 B（哪怕 B 也在片段里、哪怕 B 更完整）。\n   - 不要用「某个相关话题的条件/方法/场景」去替代用户真正问的东西。\n\
+            \   - 如果片段里 A 的信息少而 B 的信息多，仍然只答 A，可以简短。\n2. **只依据检索到的片段。** 片段里没有的事实、数字、工具名、步骤，一律不许出现。宁可答得少，不许编。\n\
             3. **必须标注来源。** 每个要点后注明来自哪个视频（片段里有标题/平台/ID）。\n4. **有冲突要并列。** 多个视频讲法不同就分开列，不要自行合并成一个说法。\n\
             5. 口语转书面：转写稿是口语，整理成通顺表达，但不改变原意、不补充信息。\n\n=== 用户的原始问题 ===\n{{#start_1.query#}}\n\
-            \n=== 检索到的片段 ===\n{{#knowledge_retrieval.result#}}"
+            \n=== 检索到的片段 ===\n{{#kr_1.result#}}"
         selected: false
-        title: 基于片段回答
+        title: 基于片段回答（首次）
         type: llm
         vision:
           configs:
             variable_selector: []
           enabled: false
       height: 116
-      id: llm_1
+      id: llm_ans1
       position:
-        x: 760
-        y: 280
+        x: 2181.6482845946916
+        y: -85.40460702626334
       positionAbsolute:
-        x: 760
-        y: 280
+        x: 2181.6482845946916
+        y: -85.40460702626334
       selected: false
-      sourcePosition: right
-      targetPosition: left
       type: custom
       width: 242
       zIndex: 0
     - data:
-        desc: 用户提问
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 只依据检索片段回答并标注来源
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: 助手
+            user: 用户
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.2
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: sys-1
+          role: system
+          text: "你是「视频知识库问答」助手。职责是：基于检索到的**视频转写稿片段**，准确回答用户的问题。\n\n=== 输出纪律（违反即失败）===\n\
+            A. 直接输出答案。禁止输出思考过程、自我辩论、备选方案。\nB. 不得出现「我们需要」「让我想想」「也许」这类内部对话语言。\nC. **不要复述输入。**\
+            \ 用户问什么就答什么，不要把所有检索到的内容都罗列一遍。\nD. **禁止输出占位符。** 任何时候都不要写出「XXX」「X」「某主题」这类占位文字，必须换成用户的真实问题内容。\n\
+            \n=== 判定：能不能回答（必须先做这一步）===\n拿到检索片段后，先问自己：**这些片段里有没有能回应用户问题的信息？**\n\n-\
+            \ **只要片段里有相关信息（哪怕是部分、哪怕是间接的）→ 就回答。** 不要因为找不到「逐字对应的句子」就拒答。\n- **不要因为片段「没有分点列成\
+            \ 1、2、3」就判定成没回答。** 只要片段里的原话已经包含了用户要的信息，就算能回答，把它整理成通顺的话输出即可。\n- **不要因为片段里的话是口语、比较零散就判定成没回答。**\
+            \ 整理和转述是你的本职工作，不是「编造」。\n- **只有在片段确实完全没有任何相关信息时，才走拒答路径。** 拒答时按下面这个格式说：\n\
+            \n  「知识库里没有关于「<把用户的问题原话填在这里>」的内容。\n\n  如果你手上有讲这件事的视频，把链接发给我，我帮你存进知识库，之后就能直接问了。」\n\
+            \n  最后那句引导是必须的——不要只说「没有」就结束，要给用户一个下一步。\n\n=== 回答规则 ===\n1. **正面回应用户问的那件事。**\
+            \ 用户问 A，就答 A。\n   - 不要答成 B（哪怕 B 也在片段里、哪怕 B 更完整）。\n   - 不要用「某个相关话题的条件/方法/场景」去替代用户真正问的东西。\n\
+            \   - 如果片段里 A 的信息少而 B 的信息多，仍然只答 A，可以简短。\n2. **只依据检索到的片段。** 片段里没有的事实、数字、工具名、步骤，一律不许出现。宁可答得少，不许编。\n\
+            3. **必须标注来源。** 每个要点后注明来自哪个视频（片段里有标题/平台/ID）。\n4. **有冲突要并列。** 多个视频讲法不同就分开列，不要自行合并成一个说法。\n\
+            5. 口语转书面：转写稿是口语，整理成通顺表达，但不改变原意、不补充信息。\n\n=== 用户的原始问题 ===\n{{#start_1.query#}}\n\
+            \n=== 检索到的片段 ===\n{{#kr_2.result#}}"
         selected: false
-        title: 开始
-        type: start
-        variables:
-        - label: 用户问题
-          max_length: 2000
-          options: []
-          required: true
-          type: paragraph
-          variable: query
-      height: 137
-      id: start_1
+        title: 基于片段回答（重试）
+        type: llm
+        vision:
+          configs:
+            variable_selector: []
+          enabled: false
+      height: 116
+      id: llm_ans2
       position:
-        x: 80
-        y: 280
+        x: 2520.4489638680193
+        y: 80.62125804937706
       positionAbsolute:
-        x: 80
-        y: 280
+        x: 2520.4489638680193
+        y: 80.62125804937706
       selected: false
-      sourcePosition: right
-      targetPosition: left
       type: custom
       width: 242
       zIndex: 0
+    - data:
+        answer: '{{#llm_ans1.text#}}'
+        desc: ''
+        selected: false
+        title: 回复（首次检索）
+        type: answer
+      height: 102
+      id: answer_1
+      position:
+        x: 2500.4975026735096
+        y: -85.40460702626334
+      positionAbsolute:
+        x: 2500.4975026735096
+        y: -85.40460702626334
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        answer: '{{#llm_ans2.text#}}'
+        desc: ''
+        selected: false
+        title: 回复（重试检索）
+        type: answer
+      height: 102
+      id: answer_2
+      position:
+        x: 2849.990100580351
+        y: 80.62125804937706
+      positionAbsolute:
+        x: 2849.990100580351
+        y: 80.62125804937706
+      selected: true
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 不检索知识库，直接回应
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: 助手
+            user: 用户
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: sys-1
+          role: system
+          text: '你是一个视频知识库问答助手的入口。用户这次的问题与知识库内容无关，不需要检索。
+
+
+            直接、简短地回答即可。如果用户在打招呼，就回应一下，并说明你可以帮他查视频里的内容。
+
+            不要假装查询了知识库，也不要说「知识库里没有」—— 那是因为这次根本没查。
+
+
+            === 用户的问题 ===
+
+            {{#sys.query#}}'
+        selected: false
+        title: 直接回答
+        type: llm
+        vision:
+          configs:
+            variable_selector: []
+          enabled: false
+      height: 116
+      id: llm_chat
+      position:
+        x: 611.9999999999999
+        y: 43.00000000000039
+      positionAbsolute:
+        x: 611.9999999999999
+        y: 43.00000000000039
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        answer: '{{#llm_chat.text#}}'
+        desc: ''
+        selected: false
+        title: 回复（直答）
+        type: answer
+      height: 102
+      id: answer_chat
+      position:
+        x: 611.9999999999999
+        y: 214.00000000000014
+      positionAbsolute:
+        x: 611.9999999999999
+        y: 214.00000000000014
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 判断该不该查知识库
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: 助手
+            user: 用户
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: sys-1
+          role: system
+          text: "判断用户这句话想干什么，输出一个数字。\n\n有三种可能：\n\n【输出 3 = 要把视频存进知识库】\n· 消息里带视频链接（douyin.com\
+            \ / b23.tv / bilibili.com / xiaohongshu.com / xhslink.com 等）\n· 并且表达了「存起来」「入库」「提取知识点」「收录」这类意思\n\
+            · 只要带了视频链接，一律算这一类 —— 哪怕没明说要入库\n\n【输出 1 = 要查知识库】\n这一类的判据是「问题有实质内容，可能在知识库里找到答案」：\n\
+            · 问某个工具/技术/功能是什么、怎么用、为什么、有什么区别\n  例：XX 是什么、XX 怎么用、显存不够怎么办、\n\
+            \      处理时间为什么变长了、新版和上一版差在哪\n· 问某件事需要什么条件、适合谁、能不能做到\n· 用「那个视频」「上次说的」「它」等指代知识库里的内容\n\
+            · 问「入库好了吗」「处理完了吗」这类进度问题\n\n⚠️ 关键：「为什么」「怎么办」「有什么区别」这类有实质内容的问题，\n   哪怕你不知道知识库里有没有，也一律输出\
+            \ 1 —— 让检索去判断有没有，\n   不要在这里替它决定。只有下面那几种才算 2。\n\n【输出 2 = 直接回答就行】\n只有这几种才算：\n\
+            · 纯社交：你好 / 谢谢 / 再见 / 在吗\n· 问助手自己：你是谁 / 你能做什么 / 怎么用你\n· 明确与知识库无关：写段快排代码\
+            \ / 今天几号 / 讲个笑话 / 帮我翻译这段英文\n\n只输出一个数字：1、2 或 3。不要任何其他字符。\n\n=== 用户说的话 ===\n\
+            {{#sys.query#}}"
+        selected: false
+        title: 意图判断
+        type: llm
+        vision:
+          configs:
+            variable_selector: []
+          enabled: false
+      height: 116
+      id: llm_intent
+      position:
+        x: 259.9546740883783
+        y: -151.56644983676878
+      positionAbsolute:
+        x: 259.9546740883783
+        y: -151.56644983676878
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        _targetBranches:
+        - id: case-ingest
+          name: 链接入库
+        - id: case-kb
+          name: 查知识库
+        - id: 'false'
+          name: ELSE
+        cases:
+        - case_id: case-ingest
+          conditions:
+          - comparison_operator: contains
+            id: cond-ingest
+            value: '3'
+            varType: string
+            variable_selector:
+            - llm_intent
+            - text
+          logical_operator: and
+        - case_id: case-kb
+          conditions:
+          - comparison_operator: contains
+            id: cond-kb
+            value: '1'
+            varType: string
+            variable_selector:
+            - llm_intent
+            - text
+          logical_operator: and
+        desc: 3=入库 / 1=查库 / 其他=直答
+        selected: false
+        title: 走哪条路
+        type: if-else
+      height: 152
+      id: if_intent
+      position:
+        x: 587.2191555040181
+        y: -151.56644983676878
+      positionAbsolute:
+        x: 587.2191555040181
+        y: -151.56644983676878
+      selected: false
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 判断问题属于哪个主题，用于筛选知识库
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: 助手
+            user: 用户
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params:
+            temperature: 0
+            thinking: false
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: sys-1
+          role: system
+          text: "判断用户的问题跟下面哪一类内容有关，输出类别名。\n\n知识库当前收录了这些视频（⭐ 这里要换成你自己的内容）：\n\n【类别A】《视频标题 1》\n   · 知识点 1\n   · 知识点 2\n   · 知识点 3\n\n【类别B】《视频标题 2》\n   · 知识点 1\n   · 知识点 2\n\n【类别C】《视频标题 3》\n   · 知识点 1\n   · 知识点 2\n\n输出规则（必须严格遵守）：\n只输出上面几个类别名中的一个，不要标点、不要解释、不要换行、不要空格：\n类别A\n类别B\n类别C\n\n判断方法：看用户问的话题最接近上面哪一条「·」内容。\n特别注意：\n· 问「工作流怎么搭」「提示词怎么写」「某个工具怎么用」时，\n  要看这个工具/工作流属于哪一类 —— 不要因为出现「工作流」三个字就都归到工具类。\n· 如果问题提到具体的视频名、UP 主名、或上面列出的关键词，直接归到那条内容所属的类别。\n· 完全看不出属于哪类时，输出：类别A\n\n=== 用户的问题 ===\n{{#sys.query#}}"
+        selected: false
+        title: 主题判断
+        type: llm
+        vision:
+          configs:
+            variable_selector: []
+          enabled: false
+      id: llm_topic
+      position:
+        x: 560
+        y: 640
+      type: custom
+    - data:
+        code: "import re\n\ndef main(text: str) -> dict:\n    text = text or ''\n\
+          \    # 常见视频平台域名\n    pat = r'https?://[^\\s，。、）)】\\]\"\\'<>]+'\n    urls\
+          \ = re.findall(pat, text)\n    vp = ('douyin.com', 'b23.tv', 'bilibili.com',\
+          \ 'xiaohongshu.com', 'xhslink.com', 'iesdouyin.com')\n    hit = [u.rstrip('.,;，。；')\
+          \ for u in urls if any(d in u for d in vp)]\n    url = hit[0] if hit else\
+          \ ''\n    return {'url': url, 'found': 'yes' if url else 'no'}"
+        code_language: python3
+        desc: 从用户消息里抓出视频链接
+        outputs:
+          found:
+            children: null
+            type: string
+          url:
+            children: null
+            type: string
+        selected: false
+        title: 提取链接
+        type: code
+        variables:
+        - value_selector:
+          - sys
+          - query
+          variable: text
+      id: code_extract
+      position:
+        x: 560
+        y: 900
+      type: custom
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: b1
+            key: ''
+            type: text
+            value: '{"url":"{{#code_extract.url#}}"}'
+          type: json
+        desc: 调入库服务，立即返回 job_id
+        headers: Content-Type:application/json
+        method: post
+        params: ''
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 10
+          max_connect_timeout: 10
+          max_read_timeout: 30
+          max_write_timeout: 30
+          read: 30
+          write: 30
+        title: 提交入库
+        type: http-request
+        url: http://host.docker.internal:8090/ingest
+      id: http_ingest
+      position:
+        x: 820
+        y: 900
+      type: custom
+    - data:
+        code: "import json\n\ndef main(body, url: str) -> dict:\n    job = ''\n  \
+          \  try:\n        d = body if isinstance(body, dict) else json.loads(body\
+          \ or '{}')\n        job = d.get('job_id', '')\n    except Exception:\n \
+          \       job = ''\n    if job:\n        msg = (f'收到，已经开始处理这个视频了。\\n\\n'\n\
+          \               f'视频链接：{url}\\n'\n               f'任务编号：{job}\\n\\n'\n \
+          \              f'处理需要一点时间（几分钟内）。完成后你直接问视频里的内容就行，'\n               f'也可以问我「刚才那个入库好了吗」。')\n\
+          \    else:\n        msg = (f'收到链接，但提交入库时出了点问题。\\n\\n'\n               f'链接：{url}\\\
+          n\\n'\n               f'请稍后再发一次，或让管理员检查入库服务是否在运行。')\n    return {'message':\
+          \ msg, 'job_id': job}"
+        code_language: python3
+        desc: 根据 HTTP 返回拼回复
+        outputs:
+          job_id:
+            children: null
+            type: string
+          message:
+            children: null
+            type: string
+        selected: false
+        title: 组装受理话术
+        type: code
+        variables:
+        - value_selector:
+          - http_ingest
+          - body
+          variable: body
+        - value_selector:
+          - code_extract
+          - url
+          variable: url
+      id: code_ingest_msg
+      position:
+        x: 1080
+        y: 900
+      type: custom
+    - data:
+        answer: '{{#code_ingest_msg.message#}}'
+        desc: ''
+        selected: false
+        title: 回复（已受理入库）
+        type: answer
+      id: answer_ingest
+      position:
+        x: 1340
+        y: 900
+      type: custom
     viewport:
-      x: -297.3058453952001
-      y: 452.71702157138077
-      zoom: 0.4863274737061426
+      x: 143.4869319689833
+      y: 412.8113874308873
+      zoom: 1.000000000000002
   rag_pipeline_variables: []

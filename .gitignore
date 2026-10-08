@@ -69,3 +69,11 @@ desktop.ini
 *.tar.gz
 *.dmp
 *.DMP
+
+# ---- Dify 导出产物（含本机 ID）----
+app-backup/
+*_export.yml
+
+
+# ⚠️ 例外：scripts/dify-bridges/ 下的桥接脚本**是项目的一部分**，虽然以 _ 开头也要入库
+!scripts/dify-bridges/_*.mjs
