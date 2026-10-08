@@ -1,7 +1,8 @@
 # dify-bridges
 
 这一组是**桥接脚本**：主脚本 `one-click-pipeline.py` 通过它们操作 Dify。
-它们建立在 [`dify-mcp`](https://github.com/)（Dify 的 MCP/CLI 工具）之上，复用了它的登录态与 HTTP 封装。
+它们建立在 **dify-mcp**（Dify 的 MCP / CLI 工具，需自行获取）之上，
+复用了它的登录态与 HTTP 封装（`src/core/*`）。
 
 ---
 
