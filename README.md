@@ -92,9 +92,11 @@
 |---|---|
 | ![工作流1](docs/images/02-工作流1-转写稿纠错.png) | ![工作流2](docs/images/03-工作流2-视频知识库问答.png) |
 
-**系统架构图**（可交互版：[docs/架构图.html](docs/架构图.html)）：
+**系统架构图**（可交互版：[docs/架构图.html](docs/架构图.html)，含明暗主题 / 语义视图 / 导出）：
 
-![架构图](docs/images/05-架构图-两个工作流.png)
+![架构图](docs/images/06-架构图-运行时与质量保障层.png)
+
+> 图中 `质量保障层 · fail-closed` 那一段是本项目与常见 RAG 项目的差别所在，详见 [`docs/质量保障层.md`](docs/质量保障层.md)。
 
 ---
 
@@ -453,8 +455,8 @@ video-to-knowledge-base/
 ├── docs/
 │   ├── 技术文档.md                     ⭐ 最有价值：30+ 个坑的完整排查记录
 │   ├── 质量保障层.md                    ⭐ 闸门 / 专名漂移 / 内容去重 / 评测体系
-│   ├── 架构图.html                     可交互架构图
-│   └── images/                         6 张截图
+│   ├── 架构图.html                     可交互架构图（含质量保障层）
+│   └── images/                         7 张截图
 ├── workflows/
 │   ├── 01-transcript-correction.yml     Dify 工作流①（纠错 + 知识点提取）
 │   └── 02-video-kb-qa.yml               Dify chatflow②（20 节点 / 19 连线）
