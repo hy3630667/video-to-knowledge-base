@@ -456,7 +456,7 @@ video-to-knowledge-base/
 │   ├── 技术文档.md                     ⭐ 最有价值：30+ 个坑的完整排查记录
 │   ├── 质量保障层.md                    ⭐ 闸门 / 专名漂移 / 内容去重 / 评测体系
 │   ├── 架构图.html                     可交互架构图（含质量保障层）
-│   └── images/                         7 张截图
+│   └── images/                         5 张截图
 ├── workflows/
 │   ├── 01-transcript-correction.yml     Dify 工作流①（纠错 + 知识点提取）
 │   └── 02-video-kb-qa.yml               Dify chatflow②（20 节点 / 19 连线）
